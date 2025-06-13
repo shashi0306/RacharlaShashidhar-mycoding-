@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Currency Converter</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f2f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .converter {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+      width: 300px;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    select, input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+    }
+    .result {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 18px;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+<div class="converter">
+  <h2>Currency Converter</h2>
+  <input type="number" id="amount" placeholder="Enter amount" />
+  <select id="fromCurrency">
+    <option value="USD">USD</option>
+    <option value="INR">INR</option>
+    <option value="EUR">EUR</option>
+    <option value="GBP">GBP</option>
+  </select>
+  <select id="toCurrency">
+    <option value="INR">INR</option>
+    <option value="USD">USD</option>
+    <option value="EUR">EUR</option>
+    <option value="GBP">GBP</option>
+  </select>
+  <button onclick="convertCurrency()">Convert</button>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+  const exchangeRates = {
+    USD: { INR: 83.2, EUR: 0.92, GBP: 0.79 },
+    INR: { USD: 0.012, EUR: 0.011, GBP: 0.0095 },
+    EUR: { USD: 1.09, INR: 90.2, GBP: 0.86 },
+    GBP: { USD: 1.27, INR: 105.4, EUR: 1.17 }
+  };
+
+  function convertCurrency() {
+    const amount = parseFloat(document.getElementById('amount').value);
+    const from = document.getElementById('fromCurrency').value;
+    const to = document.getElementById('toCurrency').value;
+
+    if (from === to) {
+      document.getElementById('result').innerText = `${amount} ${from} = ${amount} ${to}`;
+      return;
+    }
+
+    const rate = exchangeRates[from][to];
+    if (rate) {
+      const converted = (amount * rate).toFixed(2);
+      document.getElementById('result').innerText = `${amount} ${from} = ${converted} ${to}`;
+    } else {
+      document.getElementById('result').innerText = 'Exchange rate not available.';
+    }
+  }
+</script>
+
+</body>
+</html>
