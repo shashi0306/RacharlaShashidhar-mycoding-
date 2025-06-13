@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currency Converter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .converter-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            width: 100%;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="converter-container">
+        <h1>Currency Converter</h1>
+        
+        <div class="input-group">
+            <label for="amount">Amount:</label>
+            <input type="number" id="amount" placeholder="Enter amount" min="0" step="0.01">
+        </div>
+        
+        <div class="input-group">
+            <label for="fromCurrency">From Currency:</label>
+            <select id="fromCurrency">
+                <option value="USD">US Dollar (USD)</option>
+                <option value="EUR">Euro (EUR)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="JPY">Japanese Yen (JPY)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="AUD">Australian Dollar (AUD)</option>
+            </select>
+        </div>
+        
+        <div class="input-group">
+            <label for="toCurrency">To Currency:</label>
+            <select id="toCurrency">
+                <option value="EUR">Euro (EUR)</option>
+                <option value="USD" selected>US Dollar (USD)</option>
+                <option value="GBP">British Pound (GBP)</option>
+                <option value="JPY">Japanese Yen (JPY)</option>
+                <option value="CAD">Canadian Dollar (CAD)</option>
+                <option value="AUD">Australian Dollar (AUD)</option>
+            </select>
+        </div>
+        
+        <button onclick="convertCurrency()">Convert</button>
+        
+        <div id="result" class="result"></div>
+    </div>
+
+    <script>
+        // Exchange rates (normally you would fetch these from an API)
+        const exchangeRates = {
+            USD: { EUR: 0.93, GBP: 0.79, JPY: 156.92, CAD: 1.37, AUD: 1.51 },
+            EUR: { USD: 1.07, GBP: 0.85, JPY: 168.03, CAD: 1.47, AUD: 1.62 },
+            GBP: { USD: 1.27, EUR: 1.18, JPY: 198.41, CAD: 1.73, AUD: 1.91 },
+            JPY: { USD: 0.0064, EUR: 0.0060, GBP: 0.0050, CAD: 0.0087, AUD: 0.0096 },
+            CAD: { USD: 0.73, EUR: 0.68, GBP: 0.58, JPY: 114.94, AUD: 1.10 },
+            AUD: { USD: 0.66, EUR: 0.62, GBP: 0.52, JPY: 103.94, CAD: 0.91 }
+        };
+
+        function convertCurrency() {
+            const amount = parseFloat(document.getElementById('amount').value);
+            const fromCurrency = document.getElementById('fromCurrency').value;
+            const toCurrency = document.getElementById('toCurrency').value;
+            
+            if (isNaN(amount)) {
+                alert('Please enter a valid amount');
+                return;
+            }
+            
+            let result;
+            
+            if (fromCurrency === toCurrency) {
+                result = amount;
+            } else {
+                // In a real app, you would fetch rates from an API
+                const rate = exchangeRates[fromCurrency][toCurrency];
+                result = amount * rate;
+            }
+            
+            document.getElementById('result').textContent = 
+                `${amount.toFixed(2)} ${fromCurrency} = ${result.toFixed(2)} ${toCurrency}`;
+            document.getElementById('result').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
